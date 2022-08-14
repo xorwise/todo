@@ -50,6 +50,7 @@ class UserRepository(BaseRepository):
             email=u.email,
             hashed_password=hash_password(u.password),
             created_at=datetime.utcnow(),
+            categories=u.categories
         )
 
         values = {**user.dict()}

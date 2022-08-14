@@ -7,14 +7,22 @@ from typing import List
 
 router = APIRouter()
 
+#Получить список всех заданий
 @router.get('/', response_model=List[Task])
 async def read_tasks(limit: int = 100, skip: int = 100, tasks: TaskRepository = Depends(get_task_repository)):
     return await tasks.list(limit=limit, skip=skip)
 
+#Получить список текущего пользователя
+@router.get('/read_by_current_user', response_model=List[Task])
+async def read_by_current_user(current_user: User = Depends(get_current_user), tasks: TaskRepository = Depends(get_task_repository)):
+    return await tasks.get_by_user_id(user_id=current_user.id)
+
+#Создать задание
 @router.post('/create', response_model=dict)
 async def create_task(task: TaskIn, tasks: TaskRepository = Depends(get_task_repository), current_user: User = Depends(get_current_user)):
     return await tasks.create(user_id=current_user.id, t=task)
 
+#Редактировать задание
 @router.patch('/update', response_model=dict)
 async def update_task( id: int, task: TaskIn, tasks: TaskRepository = Depends(get_task_repository), current_user: User = Depends(get_current_user)):
     task = await tasks.get_by_id(id=id)
@@ -22,6 +30,7 @@ async def update_task( id: int, task: TaskIn, tasks: TaskRepository = Depends(ge
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Task not found')
     return await tasks.update(id=id, user_id=current_user.id, t=task)
 
+#Удалить задание
 @router.delete('/')
 async def delete_task(id: int, tasks: TaskRepository = Depends(get_task_repository), current_user: User = Depends(get_current_user)):
     task = await tasks.get_by_id(id=id)

@@ -1,12 +1,8 @@
-import enum
 import sqlalchemy as sa
 from .base import metadata
 import datetime
+import enum
 
-class MyEnum(enum.Enum):
-    daily = 1
-    weekly = 2
-    monthly = 3
 
 
 tasks = sa.Table(
@@ -19,5 +15,4 @@ tasks = sa.Table(
     sa.Column('is_active', sa.Boolean, default=True),
     sa.Column('end_time', sa.DateTime),
     sa.Column('created_at', sa.DateTime, default=datetime.datetime.utcnow),
-    sa.Column('category', sa.Enum(MyEnum))
     )

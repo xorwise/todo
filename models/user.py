@@ -9,6 +9,7 @@ class User(BaseModel):
     surname: str
     hashed_password: str
     created_at: datetime
+    categories: Optional[list]
 
 class UserIn(BaseModel):
     name: str
@@ -16,6 +17,7 @@ class UserIn(BaseModel):
     email: EmailStr
     password: constr(min_length=6,)
     password2: str
+    categories: list
 
     @validator('password2')
     def password_match(cls, v, values, **kwargs):

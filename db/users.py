@@ -1,3 +1,4 @@
+from email.policy import default
 import sqlalchemy as sa
 from .base import metadata
 import datetime
@@ -10,6 +11,7 @@ users = sa.Table(
     sa.Column('name', sa.String(50)),
     sa.Column('surname', sa.String(50)),
     sa.Column('hashed_password', sa.String(200), primary_key=True),
-    sa.Column('created_at', sa.DateTime, default=datetime.datetime.utcnow)
+    sa.Column('created_at', sa.DateTime, default=datetime.datetime.utcnow),
+    sa.Column('categories', sa.PickleType, default=[]),
     )
 

@@ -52,3 +52,7 @@ class TaskRepository(BaseRepository):
         query= tasks.select().where(tasks.c.id==id)
         task = await self.database.fetch_one(query=query)
         return Task.parse_obj(task)
+    
+    async def get_by_user_id(self, user_id: int) -> List[Task]:
+        query = tasks.select().where(tasks.c.user_id==user_id)
+        return await self.database.fetch_all(query=query)
